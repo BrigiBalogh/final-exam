@@ -11,3 +11,13 @@ COPY --from=builder application/snapshot-dependencies/ ./
 COPY --from=builder application/application/ ./
 ENTRYPOINT ["java", \
   "org.springframework.boot.loader.JarLauncher"]
+
+
+
+
+
+
+#FROM adoptopenjdk:16-jre-hotspot
+#RUN mkdir /opt/app
+#ADD target/*.jar /opt/app/app.jar
+#CMD ["java", "-jar", "/opt/app/app.jar"]

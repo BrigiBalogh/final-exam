@@ -19,11 +19,4 @@ public class FinalExamApplication {
     }
 
 
-
-    @Bean
-    public ObjectMapper objectMapper(){
-        return new ObjectMapper().findAndRegisterModules();
-    }
-
-
 }

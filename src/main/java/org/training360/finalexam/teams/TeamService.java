@@ -9,6 +9,7 @@ import org.training360.finalexam.players.Player;
 import org.training360.finalexam.players.PlayerRepository;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -36,39 +37,37 @@ public class TeamService {
     @Transactional
     public TeamDTO AddNewPlayerToExistingTeam(long id, CreatePlayerCommand command) {
         Team team = teamRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Cannot found team"));
+                .orElseThrow(() -> new NotFoundException(id));
 
-        Player player = new Player(command.getName(), command.getBirthDate(),command.getPosition());
+        Player player = new Player(command.getName(), command.getBirthDate(), command.getPosition());
 
         team.addPlayer(player);
 
-        return mapper.map(team, TeamDTO .class);
+        return mapper.map(team, TeamDTO.class);
     }
 
     @Transactional
-    public TeamDTO AddExistingPlayerWithTeam(long id, UpdateWithExistingPlayerCommand command) {
+    public TeamDTO AddExistingPlayerToTeam(long id, UpdateWithExistingPlayerCommand command) {
         Team team = teamRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Cannot found team"));
+                .orElseThrow(() -> new NotFoundException(id));
 
-        Player player = playerRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Cannot found player"));
+        Player player = playerRepository.findById(command.getPlayerId())
+                .orElseThrow(() -> new NotFoundException(command.getPlayerId()));
 
-        if(playerHasNotTeam(player, team)) {
+        if (playerHasNotTeam(player, team)) {
 
-        team.addPlayer(player); }
+            team.addPlayer(player);
+        }
 
-        return mapper.map(team, TeamDTO .class);
+        return mapper.map(team, TeamDTO.class);
     }
 
-    private boolean playerHasNotTeam(Player player, Team team){
-       if( player.getTeam().equals(getTeams().isEmpty())
-               && team.getPlayers().stream()
-               .filter(p->p.getPosition()== player.getPosition())
-               .toList().size() < 2) {
-           return true;
-       }
-       return false;
+    private boolean playerHasNotTeam(Player player, Team team) {
+        return player.getTeam() == null && team.getPlayers().stream()
+                .filter(p -> p.getPosition() == player.getPosition())
+                .toList().size() < 2;
     }
+
 
 }
 

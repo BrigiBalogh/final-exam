@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UpdateWithExistingPlayerCommand {
 
-    private Long id;
+    private Long playerId;
 
 }

@@ -43,9 +43,14 @@ public class TeamController {
 
 
     @PutMapping("/{id}/players")
-    public TeamDTO AddExistingPlayerWithTeam(@PathVariable("id") long id, @Valid @RequestBody UpdateWithExistingPlayerCommand command) {
-        return teamService.AddExistingPlayerWithTeam(id,command);
-
+    public TeamDTO AddExistingPlayerToTeam(@PathVariable("id") long id, @Valid @RequestBody UpdateWithExistingPlayerCommand command) {
+        return teamService.AddExistingPlayerToTeam(id,command);
     }
+
+
+   /* @PutMapping("/{id}/players")
+    public TeamDTO getFreeAgentPlayer(@PathVariable("id") long id, @RequestBody UpdateWithExistingPlayerCommand command){
+        return teamService.addNewFreeAgentToTeam(id, command);
+    }*/
 
 }

@@ -40,4 +40,9 @@ public class Player {
         this.birthDate = birthDate;
         this.position = position;
     }
+
+/*
+    public boolean hasNoTeam() {
+        return team == null;
+    } */
 }
